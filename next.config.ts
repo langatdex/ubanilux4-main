@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'grateful-bandicoot-31.convex.cloud'        
       },
+      {
+        protocol: 'https',
+        hostname: 'capable-flamingo-638.convex.cloud'        
+      },
     ],
   },
 

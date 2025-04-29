@@ -52,7 +52,7 @@ export async function POST(req) {
         PartyA: `254${formattedPhone}`,
         PartyB: shortcode,
         PhoneNumber: `254${formattedPhone}`,
-        CallBackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payments/`,
+        CallBackURL: `https://yourdomain.com/api/mpesa/callback`,
         AccountReference: "Ubanilux",
         TransactionDesc: "Payment for services",
       },

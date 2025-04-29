@@ -153,7 +153,7 @@ const BookingsList = () => {
                     <TableCell className="text-right">
                         <div className="flex justify-end gap-2">                        
                         <DropdownMenu>
-                          <DropdownMenuTrigger>
+                          <DropdownMenuTrigger asChild>
                             <Button variant="outline" size="sm">
                               <Ellipsis/>
                             </Button>

@@ -5,7 +5,7 @@ export async function GET (request){
   const { userId } = await auth()
 
   if (!userId) {
-    return { message: 'No Logged In User' }
+    return NextResponse.json({ message: 'No Logged In User' }, { status: 401 })
   }
 
   const client = await clerkClient()
@@ -13,9 +13,9 @@ export async function GET (request){
   try {
     const res = await client.users.getUserList()
     console.log(res);
-    return Response.json(res)
+    return NextResponse.json(res)
   } catch (err) {
-    return Response.json(err)
+    return NextResponse.json(err, { status: 500 })
   }
 
 }

@@ -9,6 +9,8 @@ import { api } from "../../../../convex/_generated/api"
 import Image from "next/image"
 import { useState } from "react"
 
+// Default placeholder image
+const PLACEHOLDER_IMAGE = "https://placehold.co/400x225/gray/white?text=No+Image"
 
 export default function UserCarsPage() {
   const [query,setQuery] = useState("")
@@ -46,7 +48,7 @@ export default function UserCarsPage() {
               <Card key={car._id} className="overflow-hidden w-[400px] pt-0">
                 <div className="aspect-video w-[400px] relative bg-red-900">
                   <Image
-                    src={car.image}
+                    src={car.image || PLACEHOLDER_IMAGE}
                     alt={car.name}
                     fill
                     className="object-cover"
