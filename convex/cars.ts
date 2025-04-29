@@ -56,7 +56,9 @@ export const fetchCars = query({
     return Promise.all(
       cars.map(async (car) => ({
         ...car,
-        image:car.image.includes('https') ? car.image : await ctx.storage.getUrl(car.image),        
+        image: car.image && typeof car.image === 'string' && car.image.includes('https') 
+          ? car.image 
+          : car.image ? await ctx.storage.getUrl(car.image) : null,        
       }))
     )
   },
@@ -80,13 +82,18 @@ export const fetchCarId = query({
       
       return new Promise((resolve, reject) => {
         try {
-          const getImageUrl = cars?.image.includes('https')
+          if (!cars) {
+            resolve(null);
+            return;
+          }
+
+          const getImageUrl = cars.image && typeof cars.image === 'string' && cars.image.includes('https')
             ? Promise.resolve(cars.image)
-            : ctx.storage.getUrl(cars?.image);
+            : cars.image ? ctx.storage.getUrl(cars.image) : Promise.resolve(null);
     
           const imagesPromise = Promise.all(
-            cars?.images.map(d =>
-              d.includes('https') ? Promise.resolve(d) : ctx.storage.getUrl(d)
+            (cars.images || []).map(d =>
+              typeof d === 'string' && d.includes('https') ? Promise.resolve(d) : ctx.storage.getUrl(d)
             )
           );
     

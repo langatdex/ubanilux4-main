@@ -7,12 +7,31 @@ import { DayPicker } from "react-day-picker"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
+export type CalendarProps = React.ComponentProps<typeof DayPicker>
+
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
   ...props
-}: React.ComponentProps<typeof DayPicker>) {
+}: CalendarProps) {
+  // Custom navigation components
+  const PrevButton = (props: any) => {
+    return (
+      <button {...props}>
+        <ChevronLeft className="size-4" />
+      </button>
+    )
+  }
+  
+  const NextButton = (props: any) => {
+    return (
+      <button {...props}>
+        <ChevronRight className="size-4" />
+      </button>
+    )
+  }
+  
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
@@ -60,12 +79,8 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ className, ...props }) => (
-          <ChevronLeft className={cn("size-4", className)} {...props} />
-        ),
-        IconRight: ({ className, ...props }) => (
-          <ChevronRight className={cn("size-4", className)} {...props} />
-        ),
+        PreviousMonthButton: PrevButton,
+        NextMonthButton: NextButton
       }}
       {...props}
     />

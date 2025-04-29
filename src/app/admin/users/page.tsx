@@ -18,7 +18,22 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useEffect, useState } from "react"
 
-
+// Define type for the user data
+interface UserData {
+  data: Array<{
+    id: string;
+    firstName: string;
+    lastName: string;
+    emailAddresses: Array<{ emailAddress: string }>;
+    createdAt: string;
+    banned: boolean;
+    imageUrl?: string;
+    publicMetadata: {
+      role?: string;
+    };
+    status?: string;
+  }>;
+}
 
 // Mock data for users
 const users = [
@@ -70,21 +85,24 @@ const users = [
 ]
 
 const AdminUsersPage = () => {
-  const [data,setData] = useState(null)
+  const [data, setData] = useState<UserData | null>(null)
       
   useEffect(() => {
     const fetchUsers = async () => {
-      await fetch('/api/users')
-      .then((res) => res.json())
-      .then(data => {        
-        setData(data)
-      })
-      
+      try {
+        const response = await fetch('/api/users');
+        const userData = await response.json();
+        setData(userData);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
     }
-    fetchUsers()
-  },[])
+    fetchUsers();
+  }, [])
+  
   console.log(data);
-  if (data == undefined) return null
+  if (!data) return null;
+  
   return (
     <DashboardLayout isAdmin={true}>
       <div className="grid gap-4 md:gap-8">
@@ -97,7 +115,7 @@ const AdminUsersPage = () => {
         <Card>
           <CardHeader>
             <CardTitle>All Users</CardTitle>
-            <CardDescription>You have {data.data.length} registered users.</CardDescription>
+            <CardDescription>You have {data.data?.length || 0} registered users.</CardDescription>
             <div className="flex w-full max-w-sm items-center space-x-2">
               <Input type="search" placeholder="Search users..." className="w-full" />
               <Button type="submit" size="icon" variant="ghost">
@@ -120,7 +138,7 @@ const AdminUsersPage = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.data.map((user) => {
+                {data.data?.map((user) => {
                   const createdDate = new Date(user.createdAt)
                   const createdDateString = createdDate.toLocaleDateString()
                   return (
@@ -154,23 +172,23 @@ const AdminUsersPage = () => {
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent> 
-                            {user.publicMetadata.role == 'admin' ?
+                            {user.publicMetadata?.role === 'admin' ?
                             <DropdownMenuItem
                             onClick={() => updateRole({
-                              user:user.id,
-                              role:'user'
+                              user: user.id,
+                              role: 'user'
                             })}
                             >Become user</DropdownMenuItem>
                             :
                             <DropdownMenuItem
                             onClick={() => updateRole({
-                              user:user.id,
-                              role:'admin'
+                              user: user.id,
+                              role: 'admin'
                             })}
                             >Become admin</DropdownMenuItem>
                             }
 
-                            {user.banned == false ?
+                            {user.banned === false ?
                             <DropdownMenuItem 
                             onClick={() => banUser(user.id)}
                             className="bg-destructive text-white">Ban user</DropdownMenuItem>                            

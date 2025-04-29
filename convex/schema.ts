@@ -41,4 +41,10 @@ export default defineSchema({
     ),
     paymentRef: v.optional(v.string()),
   }).index("by_userId",['userId']),
+  users: defineTable({
+    name: v.string(),
+    email: v.string(),
+    phone: v.optional(v.string()),
+    image: v.optional(v.string()),
+  }),
 });
