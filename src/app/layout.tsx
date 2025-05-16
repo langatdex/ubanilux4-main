@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ubanilux - Car Rentl",
+  title: "Ubanilux - Car Rental",
   description: "Experience the freedom of the road with our extensive fleet of luxury and economy vehicles. Book online in minutes and start your journey today.",
 };
 
